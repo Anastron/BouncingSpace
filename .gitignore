@@ -6,12 +6,12 @@ war/
 *.class
 
 
-# android specific
-# */gen/* ### we want these!
+# android specific 
+# */gen/*   ### we want these!
 
 
-### eclipse files we DO want
-    # local.properties
-    # */.loadpath
-    # classpath
+### eclipse files we DO want 
+    # local.properties 
+    # */.loadpath 
+    # classpath 
     # settings 
