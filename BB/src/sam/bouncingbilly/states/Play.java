@@ -26,8 +26,8 @@ import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.utils.Array;
 
+import sam.bouncingbilly.game.PhaseState;
 import sam.bouncingbilly.handlers.BoundedCamera;
-
 import sam.bouncingbilly.entities.Crystal;
 import sam.bouncingbilly.entities.HUD;
 import sam.bouncingbilly.entities.Player;
@@ -54,6 +54,8 @@ public class Play extends GameState {
 	private int tileMapHeight;
 	private OrthogonalTiledMapRenderer tmr;
 
+	private PhaseState phase = PhaseState.RED;
+	
 	private Player player;
 	private Array<Crystal> crystals;
 
@@ -103,40 +105,29 @@ public class Play extends GameState {
 
 	@Override
 	public void handleInput() {
-
-		// player jump
-		if (MyInput.isPressed(MyInput.BUTTON1)) {
+		if (MyInput.isPressed(MyInput.BTN_JUMP)) {
 			if (cl.isPlayerOnGround()) {
 				player.getBody().applyForceToCenter(0, 250, true);
 				BouncingBilly.res.getSound("jump").play();
 			}
 		}
-
-		// mouse/touch input for android
-		// left side of screen to switch blocks
-		// right side of screen to jump
-
-		if (MyInput.isPressed() && cl.isPlayerOnGround() && MyInput.x > Gdx.graphics.getWidth() / 2) {
-			player.getBody().applyForceToCenter(0, 250, true);
-			BouncingBilly.res.getSound("jump").play();
+		
+		if (MyInput.isPressed(MyInput.BTN_UP)) {
+			switchBlock(PhaseState.RED);
 		}
-
-		if (MyInput.isPressed() && (MyInput.x < Gdx.graphics.getWidth() / 2)) {
-			switchBlock();
-			BouncingBilly.res.getSound("changeblock").play();
+		if (MyInput.isPressed(MyInput.BTN_RIGHT)) {
+			switchBlock(PhaseState.BLUE);
 		}
-
-		// switch block color
-		if (MyInput.isPressed(MyInput.BUTTON2)) {
-			switchBlock();
-			BouncingBilly.res.getSound("changeblock").play();
+		if (MyInput.isPressed(MyInput.BTN_DOWN)) {
+			switchBlock(PhaseState.GREEN);
 		}
-
+		if (MyInput.isPressed(MyInput.BTN_LEFT)) {
+			switchBlock(PhaseState.YELLOW);
+		}
 	}
 
 	@Override
 	public void update(float dt) {
-
 		// check input
 		handleInput();
 
@@ -158,7 +149,6 @@ public class Play extends GameState {
 
 		// player win
 		if (player.getBody().getPosition().x * PPM > tileMapWidth * tileSize) {
-
 			checkPoints();
 
 			gsm.setState(GameStateManager.MENU);
@@ -263,7 +253,7 @@ public class Play extends GameState {
 		// create player
 		bdef.position.set(100 / PPM, 200 / PPM);
 		bdef.type = BodyType.DynamicBody;
-		bdef.linearVelocity.set(.8f, 0);
+		bdef.linearVelocity.set(1.6f, 0);
 		Body body = world.createBody(bdef);
 
 		shape.setAsBox(13 / PPM, 13 / PPM);
@@ -390,33 +380,40 @@ public class Play extends GameState {
 
 	}
 
-	private void switchBlock() {
-
-		Filter filter = player.getBody().getFixtureList().first().getFilterData();
-		short bits = filter.maskBits;
-
-		// switch to next color
-		// red -> green -> blue -> red
-		if ((bits & B2DVars.BIT_RED) != 0) {
-			bits &= ~B2DVars.BIT_RED;
-			bits |= B2DVars.BIT_GREEN;
-		} else if ((bits & B2DVars.BIT_GREEN) != 0) {
-			bits &= ~B2DVars.BIT_GREEN;
-			bits |= B2DVars.BIT_BLUE;
-		} else if ((bits & B2DVars.BIT_BLUE) != 0) {
-			bits &= ~B2DVars.BIT_BLUE;
-			bits |= B2DVars.BIT_RED;
-		}
-
-		// set new mask bits
-		filter.maskBits = bits;
-		player.getBody().getFixtureList().first().setFilterData(filter);
-
-		// set new mask bits for foot
-		filter = player.getBody().getFixtureList().get(1).getFilterData();
-		bits &= ~B2DVars.BIT_CRYSTAL;
-		filter.maskBits = bits;
-		player.getBody().getFixtureList().get(1).setFilterData(filter);
+	
+	
+	private void switchBlock(PhaseState _phase) {
+		BouncingBilly.res.getSound("changeblock").play();
+		phase = _phase;
+		
+		
+		
+		
+//		Filter filter = player.getBody().getFixtureList().first().getFilterData();
+//		short bits = filter.maskBits;
+//
+//		// switch to next color
+//		// red -> green -> blue -> red
+//		if ((bits & B2DVars.BIT_RED) != 0) {
+//			bits &= ~B2DVars.BIT_RED;
+//			bits |= B2DVars.BIT_GREEN;
+//		} else if ((bits & B2DVars.BIT_GREEN) != 0) {
+//			bits &= ~B2DVars.BIT_GREEN;
+//			bits |= B2DVars.BIT_BLUE;
+//		} else if ((bits & B2DVars.BIT_BLUE) != 0) {
+//			bits &= ~B2DVars.BIT_BLUE;
+//			bits |= B2DVars.BIT_RED;
+//		}
+//
+//		// set new mask bits
+//		filter.maskBits = bits;
+//		player.getBody().getFixtureList().first().setFilterData(filter);
+//
+//		// set new mask bits for foot
+//		filter = player.getBody().getFixtureList().get(1).getFilterData();
+//		bits &= ~B2DVars.BIT_CRYSTAL;
+//		filter.maskBits = bits;
+//		player.getBody().getFixtureList().get(1).setFilterData(filter);
 	}
 
 }

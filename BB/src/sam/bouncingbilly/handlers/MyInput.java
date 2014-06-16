@@ -11,9 +11,12 @@ public class MyInput {
 	public static int x;
 	public static int y;
 
-	public static final int NUM_KEYS = 2;
-	public static final int BUTTON1 = 0;
-	public static final int BUTTON2 = 1;
+	public static final int NUM_KEYS = 5;
+	public static final int BTN_JUMP = 0;
+	public static final int BTN_UP = 1;
+	public static final int BTN_DOWN = 2;
+	public static final int BTN_LEFT = 3;
+	public static final int BTN_RIGHT = 4;
 
 	static {
 		keys = new boolean[NUM_KEYS];

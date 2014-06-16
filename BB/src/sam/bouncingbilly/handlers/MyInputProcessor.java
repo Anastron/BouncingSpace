@@ -8,22 +8,40 @@ public class MyInputProcessor extends InputAdapter {
 
 	@Override
 	public boolean keyDown(int k) {
-		if (k == Keys.Y) {
-			MyInput.setKey(MyInput.BUTTON1, true);
+		if (k == Keys.SPACE) {
+			MyInput.setKey(MyInput.BTN_JUMP, true);
 		}
-		if (k == Keys.X) {
-			MyInput.setKey(MyInput.BUTTON2, true);
+		if (k == Keys.UP) {
+			MyInput.setKey(MyInput.BTN_UP, true);
+		}
+		if (k == Keys.DOWN) {
+			MyInput.setKey(MyInput.BTN_DOWN, true);
+		}
+		if (k == Keys.LEFT) {
+			MyInput.setKey(MyInput.BTN_LEFT, true);
+		}
+		if (k == Keys.RIGHT) {
+			MyInput.setKey(MyInput.BTN_RIGHT, true);
 		}
 		return true;
 	}
 
 	@Override
 	public boolean keyUp(int k) {
-		if (k == Keys.Y) {
-			MyInput.setKey(MyInput.BUTTON1, false);
+		if (k == Keys.SPACE) {
+			MyInput.setKey(MyInput.BTN_JUMP, false);
 		}
-		if (k == Keys.X) {
-			MyInput.setKey(MyInput.BUTTON2, false);
+		if (k == Keys.UP) {
+			MyInput.setKey(MyInput.BTN_UP, false);
+		}
+		if (k == Keys.DOWN) {
+			MyInput.setKey(MyInput.BTN_DOWN, false);
+		}
+		if (k == Keys.LEFT) {
+			MyInput.setKey(MyInput.BTN_LEFT, false);
+		}
+		if (k == Keys.RIGHT) {
+			MyInput.setKey(MyInput.BTN_RIGHT, false);
 		}
 		return true;
 	}

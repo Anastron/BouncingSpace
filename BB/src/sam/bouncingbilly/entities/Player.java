@@ -11,14 +11,12 @@ public class Player extends B2DSprite {
 	private int totalCrystals;
 
 	public Player(Body body) {
-
 		super(body);
 
 		Texture tex = BouncingBilly.res.getTexture("billy");
 		TextureRegion[] sprites = TextureRegion.split(tex, 32, 32)[0];
 
 		setAnimation(sprites, 1 / 12f);
-
 	}
 
 	public void collectCrystal() {
