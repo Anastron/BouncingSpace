@@ -94,15 +94,14 @@ public class Play extends GameState {
 
 		// set up box2d cam
 		b2dCam = new BoundedCamera();
-		b2dCam.setToOrtho(false, BouncingBilly.V_WIDTH / PPM,
-				BouncingBilly.V_HEIGHT / PPM);
-		b2dCam.setBounds(0, (tileMapWidth * tileSize) / PPM, 0,
-				(tileMapHeight * tileSize) / PPM);
+		b2dCam.setToOrtho(false, BouncingBilly.V_WIDTH / PPM, BouncingBilly.V_HEIGHT / PPM);
+		b2dCam.setBounds(0, (tileMapWidth * tileSize) / PPM, 0, (tileMapHeight * tileSize) / PPM);
 
 		// set up hud
 		hud = new HUD(player);
 	}
 
+	@Override
 	public void handleInput() {
 
 		// player jump
@@ -117,8 +116,7 @@ public class Play extends GameState {
 		// left side of screen to switch blocks
 		// right side of screen to jump
 
-		if (MyInput.isPressed() && cl.isPlayerOnGround()
-				&& MyInput.x > Gdx.graphics.getWidth() / 2) {
+		if (MyInput.isPressed() && cl.isPlayerOnGround() && MyInput.x > Gdx.graphics.getWidth() / 2) {
 			player.getBody().applyForceToCenter(0, 250, true);
 			BouncingBilly.res.getSound("jump").play();
 		}
@@ -136,6 +134,7 @@ public class Play extends GameState {
 
 	}
 
+	@Override
 	public void update(float dt) {
 
 		// check input
@@ -199,26 +198,25 @@ public class Play extends GameState {
 		int points = BouncingBilly.prefsPoints.getInteger(level + "_lvl_Points");
 
 		if (points < player.getNumCrystals()) {
-			BouncingBilly.prefsPoints.putInteger(level + "_lvl_Points",
-					player.getNumCrystals());
+			BouncingBilly.prefsPoints.putInteger(level + "_lvl_Points", player.getNumCrystals());
 			BouncingBilly.prefsPoints.flush();
 		}
 		for (int i = 1; i < 6; i++) {
-			allPoints2 += BouncingBilly.prefsPoints.getInteger( i + "_lvl_Points");
+			allPoints2 += BouncingBilly.prefsPoints.getInteger(i + "_lvl_Points");
 		}
-		
+
 		BouncingBilly.prefsPoints.putInteger("allPoints", allPoints2);
 		BouncingBilly.prefsPoints.flush();
 	}
 
+	@Override
 	public void render() {
 
 		// clear screen
 		Gdx.gl20.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
 		// set camere to follow player
-		cam.position.set(player.getPosition().x * PPM + BouncingBilly.V_WIDTH
-				/ 4, BouncingBilly.V_HEIGHT / 2, 0);
+		cam.position.set(player.getPosition().x * PPM + BouncingBilly.V_WIDTH / 4, BouncingBilly.V_HEIGHT / 2, 0);
 		cam.update();
 
 		// draw background
@@ -251,7 +249,9 @@ public class Play extends GameState {
 
 	}
 
+	@Override
 	public void dispose() {
+		// nothing
 	}
 
 	private void createPlayer() {
@@ -333,8 +333,7 @@ public class Play extends GameState {
 
 				// create a body + fixture from cell
 				bdef.type = BodyType.StaticBody;
-				bdef.position.set((col + 0.5f) * tileSize / PPM, (row + 0.5f)
-						* tileSize / PPM);
+				bdef.position.set((col + 0.5f) * tileSize / PPM, (row + 0.5f) * tileSize / PPM);
 
 				ChainShape cs = new ChainShape();
 				Vector2[] v = new Vector2[3];
@@ -393,8 +392,7 @@ public class Play extends GameState {
 
 	private void switchBlock() {
 
-		Filter filter = player.getBody().getFixtureList().first()
-				.getFilterData();
+		Filter filter = player.getBody().getFixtureList().first().getFilterData();
 		short bits = filter.maskBits;
 
 		// switch to next color
